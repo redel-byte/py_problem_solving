@@ -246,3 +246,67 @@ coordonnees = {(1, 2), (3, 4)}
 
 
 # ---- Bloc 4 — Combinaison listes / dicts / sets
+
+ventes = [
+    {"produit": "pommes", "montant": 120},
+    {"produit": "bananes", "montant": 80},
+    {"produit": "pommes", "montant": 45},
+    {"produit": "oranges", "montant": 60},
+    {"produit": "bananes", "montant": 30},
+]
+
+
+# Total par produit : {"pommes": 165, "bananes": 110, "oranges": 60}
+# Meilleur produit : pommes (165)
+# Produits distincts : {"pommes", "bananes", "oranges"}
+
+
+def max_produit(results) -> str:
+    produit = ""
+    min = results[0]["montant"]
+    for result in results:
+        if min > result["montant"]:
+            min, produit = result["montant"], result["produit"]
+
+    return f"{produit} ({min})"
+
+
+def statistique(ventes: list) -> str | None:
+    results = []
+    for vente in ventes:
+        existing = next(
+            (obj for obj in results if vente["produit"] == obj["produit"]), None
+        )
+        if existing:
+            existing["montant"] += vente["montant"]
+        else:
+            results.append(vente.copy())
+
+    return f"Total par produit: {results}\nMeilleur produit : {max_produit(results)}\nProduits distincts : {distincts_products(results)}"
+
+
+def distincts_products(results) -> set:
+    return {obj["produit"] for obj in ventes}
+
+
+statistique(ventes)
+
+inv1 = {"pommes": 20, "bananes": 15}
+inv2 = {"bananes": 10, "kiwis": 5}
+
+
+# {"pommes": 20, "bananes": 25, "kiwis": 5}
+def fusionner_inventaires(inv1, inv2):
+    combined_list = list(inv1.items()) + list(inv2.items())
+    unique_fuits = set()
+    for fruite_tuple in combined_list:
+        existing = next((tup for tup in fruite_tuple if tup[0] in unique_fuits), None)
+        if existing:
+            existing[1] += fruite_tuple[1]
+        else:
+            unique_fuits.add(existing[0])
+
+    return
+
+
+# print(fusionner_inventaires(inv1, inv2))
