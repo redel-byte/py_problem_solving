@@ -295,18 +295,11 @@ inv1 = {"pommes": 20, "bananes": 15}
 inv2 = {"bananes": 10, "kiwis": 5}
 
 
-# {"pommes": 20, "bananes": 25, "kiwis": 5}
 def fusionner_inventaires(inv1, inv2):
-    combined_list = list(inv1.items()) + list(inv2.items())
-    unique_fuits = set()
-    for fruite_tuple in combined_list:
-        existing = next((tup for tup in fruite_tuple if tup[0] in unique_fuits), None)
-        if existing:
-            existing[1] += fruite_tuple[1]
-        else:
-            unique_fuits.add(existing[0])
-
-    return
+    res = inv1.copy()
+    for item, qty in inv2.items():
+        res[item] = res.get(item, 0) + qty
+    return res
 
 
-# print(fusionner_inventaires(inv1, inv2))
+print(fusionner_inventaires(inv1, inv2))
